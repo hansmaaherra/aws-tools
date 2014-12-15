@@ -62,7 +62,7 @@ function generateSignURL()
     local endPoint="$("$(isEmptyString ${region})" = 'true' && echo 's3.amazonaws.com' || echo "s3-${region}.amazonaws.com")"
     local expire="$(($(date +%s) + ${minuteExpire} * 60))"
     local signature="$(echo -en "${method}\n\n\n${expire}\n/${bucket}/${filePath}" | \
-                       openssl dgst -sha1 -binary -hmac "${awsSecretAccessKey}" | \
+                       openssl dgst -sha256 -binary -hmac "${awsSecretAccessKey}" | \
                        openssl base64)"
     local query="AWSAccessKeyId=$(encodeURL "${awsAccessKeyID}")&Expires=${expire}&Signature=$(encodeURL "${signature}")"
 
